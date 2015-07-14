@@ -1,0 +1,20 @@
+{
+    "name": "focalworks/audit",
+    "description": "This module will be used to keep an audit of all the changes done to a type of content. Maintain a log of the changes as revisions and ability to roll back to any previous revision",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pruthvi",
+            "email": "pruthvi.pagdhal@focalworks.in"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Focalworks\\Audit\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "illuminate/support": "~5"
+    }
+}
