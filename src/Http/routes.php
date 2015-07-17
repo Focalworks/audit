@@ -10,6 +10,6 @@ Route::get('audit',function(){
     echo "hello";
 });
 
-Route::get('book', 'Focalworks\Audit\Http\Controllers\TestController@book');
+Route::get('create', 'Focalworks\Audit\Http\Controllers\TestController@create');
 
 Route::get('pre', 'Focalworks\Audit\Http\Controllers\TestController@pre');

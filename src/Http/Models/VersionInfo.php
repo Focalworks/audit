@@ -40,21 +40,50 @@ class VersionInfo extends Model
         ]);
     }
 
-    public function getLatestVersionByContentId($id)
+    public function getLastDiffContent($id, $type)
     {
-        return DB::table($this->table)->where('content_id', $id)->orderBy('id','desc')->first();
+        return DB::table($this->table)
+            ->where('content_id', $id)
+            ->where('content_type', $type)
+            ->orderBy('id','desc')
+            ->take(2)
+            ->get();
     }
 
-    public function getRevision($id)
+    public function getLast($id, $type)
     {
-        return DB::table($this->table)->where('revision_no', $id)->first();
+        return DB::table($this->table)
+            ->where('content_id', $id)
+            ->where('content_type', $type)
+            ->orderBy('id','desc')
+            ->first();
     }
 
-    public function getPreVersion($id)
+    // public function getRevision($id, $type)
+    // {
+    //     return DB::table($this->table)
+    //         ->where('revision_no', $id)
+    //         ->where('content_type', $type)
+    //         ->first();
+    // }
+
+    public function getPreVersion($id, $type)
     {
-        return DB::table($this->table)->where('content_id', $id)->orderBy('id','desc')->skip(1)->take(1)->first();
+        return DB::table($this->table)
+            ->where('content_id', $id)
+            ->where('content_type', $type)
+            ->orderBy('id','desc')
+            ->skip(1)
+            ->take(1)
+            ->first();
     }
 
-
-
+    public function getContentAllVersions($id, $type)
+    {
+        return DB::table($this->table)
+            ->where('content_id', $id)
+            ->where('content_type', $type)
+            ->orderBy('id','desc')
+            ->get();
+    }
 }

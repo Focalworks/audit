@@ -13,7 +13,7 @@ class AuditServiceProvider extends ServiceProvider
         });
     }
 
-    public function boot()
+    public function boot()   
     {
         // loading the routes from the routes file.
         if (!$this->app->routesAreCached()) {

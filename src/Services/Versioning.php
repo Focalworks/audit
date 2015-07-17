@@ -2,7 +2,6 @@
 namespace Focalworks\Audit\Services;
 
 use Focalworks\Audit\Http\Models\VersionInfo;
-use Focalworks\Audit\Interfaces\Content;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -11,37 +10,16 @@ use Illuminate\Support\Facades\Auth;
  * Date: 15/7/15
  * Time: 2:18 PM
  */
-class Versioning implements Content
+class Versioning
 {
     protected $content;
 
     function  __construct($content)
     {
-        $this->content = $content;
-        $this->id = 1;
-        $this->content_type = 'book';
-
+        $this->content = $content->attributesToArray();
+        $this->id = $content->id;
+        $this->content_type = $content->getContentType();
     }
-
-    public function getContent()
-    {
-        $version = new VersionInfo();
-        return $version->getLatestVersionByContentId($this->id);
-    }
-
-    /*
-     * Get previous version of specified content from current content id
-     *
-     * @var
-     * @return object
-     */
-
-    public function getPreviousContent()
-    {
-        $version = new VersionInfo();
-        return $version->getPreVersion($this->id);
-    }
-
 
     /*
      * Save content object in database
@@ -66,15 +44,16 @@ class Versioning implements Content
     }
 
     /*
-     *
+     * rollback to given version
      */
+
     public function rollback($ver)
     {
         $version = new VersionInfo();
         $revisionData = $version->getRevision($ver);
 
         $contentData = [
-            'content_id' => $revisionData->id,
+            'content_id' => $revisionData->content_id,
             'content_type' => $revisionData->content_type,
             'revision_no' => $this->generateVersion(),
             'user_id' => $this->getUserId(),
@@ -86,6 +65,38 @@ class Versioning implements Content
 
     }
 
+    public function getcurrentVersion()
+    {
+        $version = new VersionInfo();
+        $revisionData = $version->getLast($this->id, $this->content_type);
+        return $revisionData;
+    }
+
+    public function getLatestDiff()
+    {
+        $version = new VersionInfo();
+        $revisionData = $version->getLastDiffContent($this->id, $this->content_type);
+        return $revisionData;
+    }
+
+    public function getPreviousContent() 
+    {
+        $version = new VersionInfo();
+        $prevData = $version->getPreVersion($this->id, $this->content_type);
+        return $prevData;
+    }
+    /**
+     * Get List of all revisions based on content object
+     *
+     * @return int
+     */
+
+    public function contentHistory()
+    {
+        $version = new VersionInfo();
+        $contentData = $version->getContentAllVersions($this->id, $this->content_type);
+        return $contentData;
+    }
 
     /*
      * Get userid from session / logged in user
@@ -93,13 +104,14 @@ class Versioning implements Content
      * @var
      * @return useid string / integer
      */
+
     private function getUserId()
     {
         return 1;
     }
 
     /*
-     * Generate version
+     * Generate version number
      *
      * @var
      * @return string

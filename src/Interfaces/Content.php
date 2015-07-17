@@ -9,6 +9,5 @@ namespace Focalworks\Audit\Interfaces;
  */
 
 Interface Content {
-    public function getContent();
-    public function getPreviousContent();
+    public function getContentType();
 }
