@@ -11,3 +11,24 @@ This package has configuration files and migration files, so once the service pr
     php artisan vendor:publish
 
 It will publish one config file "audit.php" inside config folder, migration file inside database/migrations folder and "assets" folder inside public folder.
+
+##Usage
+
+To create or save revisions of any object follow the steps as below :
+
+ 1. Add "use Focalworks\Audit\Audit;" in your controller
+ 2. Implements interface "content" in your class which will return type of your content
+ 3. To create copy of your content use "Audit::makeVersion($yourObject)"
+
+    For example: $blogPost = new blog(); //your object
+                 $blogPost->title = 'My first post';
+                 $blogPost->description = 'My first post description';
+
+
+                 Audit::makeVersion($blogPost); //usage
+
+ 4. To view revisions go to "http://yourdomain.com/audit/content_type/content_id"
+
+    For example your url will looks like http://localhost/audit-mgmt/public/audit/blog/1
+
+Also there is an interface from where you can see the list of all revisions and extend it according to requirement using URL "http://yourdomain.com/audit-history"

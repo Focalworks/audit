@@ -15,7 +15,7 @@ class Audit
 {
     /**
      * create version for given object
-     * 
+     *
      * @param Content $content
      * @return type
      */
@@ -35,7 +35,7 @@ class Audit
 
     /**
      * get current version of given object
-     * 
+     *
      * @param Content $content
      * @return type
      */
@@ -48,7 +48,7 @@ class Audit
 
     /**
      * get latest 2 revisions of passed object type
-     * 
+     *
      * @param Content $content
      * @return type
      */
@@ -73,7 +73,7 @@ class Audit
 
     /**
      * get all revision of given object type
-     * 
+     *
      * @param Content $content
      * @return type
      */
@@ -102,31 +102,31 @@ class Audit
      *
      * @param type $version
      */
-   public static function rollBackToVersion($version)
-   {
-       $versioning = new Versioning($version);
-       $currentVersion = $versioning->rollback($version);
-       dd($currentVersion);
-   }
+    public static function rollBackToVersion($version)
+    {
+        $versioning = new Versioning($version);
+        $currentVersion = $versioning->rollback($version);
+        dd($currentVersion);
+    }
 
-   public static function getDiffContent($type, $id)
-   {
-       $versioning = new Versioning();
-       $currentVersion = $versioning->getContentHistory($type, $id);
-       return $currentVersion;
-   }
+    public static function getDiffContent($type, $id)
+    {
+        $versioning = new Versioning();
+        $currentVersion = $versioning->getContentHistory($type, $id);
+        return $currentVersion;
+    }
 
-      /**
-    * get distinct content types list
-    *
-    * @return type
-    */
-   public function getContentTypesList()
-   {
-       $versioning = new Versioning();
-       $revisions = $versioning->getContentTypes();
-       return $revisions;
+    /**
+     * get distinct content types list
+     *
+     * @return type
+     */
+    public function getContentTypesList()
+    {
+        $versioning = new Versioning();
+        $revisions = $versioning->getContentTypes();
+        return $revisions;
 
-   } 
+    }
 
 }

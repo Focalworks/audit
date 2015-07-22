@@ -24,7 +24,7 @@ class AuditController extends Controller
 
 
     /**
-     *
+     * constructor
      */
     public function __construct()
     {
@@ -36,20 +36,43 @@ class AuditController extends Controller
         }
     }
 
+    /**
+     * This will display versions of all object based on its type
+     * if null it displays all data
+     *
+     * @param null $type
+     * @return $this
+     */
     public function history($type = null)
     {
         $data = Audit::getHistory($type);
-        return view('audit::history')->with('historyData', $data)
+        return view('audit::history')
+            ->with('historyData', $data)
             ->with('template', $this->template);
     }
 
+    /**
+     * This will display view for version diff from version id
+     * (called from histroy list)
+     *
+     * @param $id
+     * @return $this
+     */
     public function diff($id)
     {
         $data = Audit::getDiff($id);
-        return view('audit::diff')->with('data', $data)
+        return view('audit::diff')
+            ->with('data', $data)
             ->with('template', $this->template);
     }
 
+    /**
+     * This will display diff from type and content id
+     *
+     * @param $type
+     * @param $id
+     * @return $this
+     */
     public function audit($type, $id)
     {
         $data = Audit::getDiffContent($type, $id);
