@@ -184,7 +184,7 @@ class Versioning
     {
         if (Auth::check())
         {
-            return $id = Auth::user()->getId();
+            return $id = Auth::user()->id;
         }
         return false;
     }
