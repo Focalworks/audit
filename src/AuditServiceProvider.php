@@ -20,9 +20,13 @@ class AuditServiceProvider extends ServiceProvider
             require __DIR__ . '/Http/routes.php';
         }
 
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'audit');
+
         // publishing the migrations
         $this->publishes([
             __DIR__ . '/../database/migrations/2015_07_15_095544_create_version_info_table.php' => base_path('database/migrations/2015_07_15_095544_create_version_info_table.php'),
+            __DIR__.'/../assets' => public_path('assets'),
+            __DIR__.'/config/audit.php' => config_path('audit.php')
         ]);
     }
 }

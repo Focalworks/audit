@@ -40,7 +40,7 @@ class VersionInfo extends Model
         ]);
     }
 
-    public function getLastDiffContent($id, $type)
+    public function getDiffContent($id, $type)
     {
         return DB::table($this->table)
             ->where('content_id', $id)
@@ -48,6 +48,33 @@ class VersionInfo extends Model
             ->orderBy('id','desc')
             ->take(2)
             ->get();
+    }
+
+    public function getDiffFromVersionId($versionInfoId, $id, $type)
+    {
+        return DB::table($this->table)
+            ->where('content_id', $id)
+            ->where('id', "<=", $versionInfoId)
+            ->where('content_type', $type)
+            ->orderBy('id','desc')
+            ->take(2)
+            ->get();
+    }
+
+    public function getContentFromId($id)
+    {
+        return DB::table($this->table)
+            ->select(['id','content_id','content_type'])
+            ->where('id', $id)
+            ->first();
+    }
+
+    public function getContentFromVersion($version_no)
+    {
+        return DB::table($this->table)
+            ->select(['id','content_id','content_type'])
+            ->where('version_no', $version_no)
+            ->first();
     }
 
     public function getLast($id, $type)
@@ -83,7 +110,34 @@ class VersionInfo extends Model
         return DB::table($this->table)
             ->where('content_id', $id)
             ->where('content_type', $type)
+//            ->orderBy('content_type','asc')
             ->orderBy('id','desc')
+            ->get();
+    }
+
+    public function getAll()
+    {
+        return DB::table($this->table)
+            ->orderBy('content_type')
+            ->orderBy('id','desc')
+            ->get();
+    }
+
+    public function getAllofType($type)
+    {
+        return DB::table($this->table)
+            ->where('content_type',$type)
+            ->orderBy('id','desc')
+            ->get();
+    }
+
+
+    public function getContentTypes()
+    {
+        return DB::table($this->table)
+            ->select('content_type')
+            ->distinct()
+            ->orderBy('content_type')
             ->get();
     }
 }

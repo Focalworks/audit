@@ -13,3 +13,11 @@ Route::get('audit',function(){
 Route::get('create', 'Focalworks\Audit\Http\Controllers\TestController@create');
 
 Route::get('pre', 'Focalworks\Audit\Http\Controllers\TestController@pre');
+
+Route::get('demo', 'Focalworks\Audit\Http\Controllers\TestController@demo');
+
+Route::get('audit/{type}/{id}', 'Focalworks\Audit\Http\Controllers\AuditController@audit');
+
+Route::get('diff/{id}', 'Focalworks\Audit\Http\Controllers\AuditController@diff');
+
+Route::get('history/{all?}', 'Focalworks\Audit\Http\Controllers\AuditController@history');
