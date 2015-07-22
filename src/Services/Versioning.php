@@ -177,9 +177,16 @@ class Versioning
      * @return useid string / integer
      */
 
+    /**
+     * @return bool
+     */
     private function getUserId()
     {
-        return 1;
+        if (Auth::check())
+        {
+            return $id = Auth::user()->getId();
+        }
+        return false;
     }
     /*
      * Generate version number
