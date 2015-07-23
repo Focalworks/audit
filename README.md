@@ -4,7 +4,7 @@ This package will help you to keep revision of your object. For instance, one ne
 
 To register this package with Laravel you need to add this line to your provider's array:
 
-    'Focalworks\Audig\AuditServiceProvider'
+    'Focalworks\Audit\AuditServiceProvider'
 
 This package has configuration files and migration files, so once the service provider is registered with your application, you need to run the following console command to publish the vendor files and run migrations:
 
