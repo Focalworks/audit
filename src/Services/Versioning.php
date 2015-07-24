@@ -80,7 +80,7 @@ class Versioning
         foreach ($revisionData as $index => $rev) {
             $data               = json_decode($rev->data);
             $returnData[$index] = null;
-            
+
             foreach ($data as $k => $content) {
                 $returnData[$index] .= str_replace("_", ' ', $k).": ".$content."\n";
             }
@@ -102,7 +102,8 @@ class Versioning
             $returnData['revision'.$index] = $rev->revision_no;
 
             if (json_decode($rev->data)) {
-                $data               = json_decode($rev->data);
+                $data = (array) json_decode($rev->data);
+                ksort($data);
                 $returnData[$index] = null;
                 foreach ($data as $k => $content) {
                     $returnData[$index] .= str_replace("_", ' ', $k).": ".$content."\n";
