@@ -97,24 +97,79 @@ class Versioning
         $revisionData = $version->getDiffFromVersionId($id,
             $revision->content_id, $revision->content_type);
 
+        $keySequence = $this->getCommonKeys($revisionData);
+
+        $endData = null;
+
+        //loop though diff object and manipulate it for comparing diff
         foreach ($revisionData as $index => $rev) {
 
             $returnData['revision'.$index] = $rev->revision_no;
+            $returnData[$index] = null;
 
             if (json_decode($rev->data)) {
-                $data = (array) json_decode($rev->data);
-                ksort($data);
-                $returnData[$index] = null;
+                $data = json_decode($rev->data);
+
+                $sequenceData[$index] = null;
+                $endData[$index] = null;
                 foreach ($data as $k => $content) {
-                    $returnData[$index] .= str_replace("_", ' ', $k).": ".$content."\n";
+                    if(array_key_exists($k,$keySequence)) {
+                        //sequence object keys for exact comparison
+                        $sequenceData[$index][$keySequence[$k]] = str_replace("_", ' ', $k).": ".$content."\n";
+                    } else {
+                        //diff object keys to append at the end of content string
+                        $endData[$index] .= str_replace("_", ' ', $k).": ".$content."\n";
+                    }
                 }
             } else {
+                //if content is not json object return data as it is
                 $returnData[$index] = $rev->data;
             }
         }
+
+        //make string according to sequence for comparison
+        if(isset($sequenceData)) {
+
+            foreach ($sequenceData as $key => $value) {
+
+                foreach($keySequence as $k=>$seq) {
+                    $returnData[$key] .= $sequenceData[$key][$seq];
+                }
+
+                //concat diff string at the end
+                if(isset($endData[$key])) {
+                    $returnData[$key] .= $endData[$key];
+                }
+            }
+        }
+
         return $returnData;
     }
 
+    /**
+     * This will compare two arrays and return common keys
+     * @param $data
+     * @return array or common keys
+     */
+    private function getCommonKeys($data)
+    {
+        foreach ($data as $index => $rev) {
+
+            if (json_decode($rev->data)) {
+                $subData = json_decode($rev->data);
+
+                foreach ($subData as $key => $value ) {
+                    $keySequence[$index][] = $key;
+                }
+            }
+        }
+        if( count($keySequence) > 1) {
+            $commonKeys = array_intersect($keySequence[0], $keySequence[1]);
+        } else {
+            $commonKeys = $keySequence[0];
+        }
+        return array_flip($commonKeys);
+    }
     public function getPreviousContent()
     {
         $version  = new VersionInfo();
