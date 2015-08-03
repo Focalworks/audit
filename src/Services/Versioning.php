@@ -65,13 +65,17 @@ class Versioning
         return $ver;
     }
 
-    public function getcurrentVersion()
+    public function getCurrentVersion()
     {
         $version      = new VersionInfo();
         $revisionData = $version->getLast($this->id, $this->content_type);
         return $revisionData;
     }
 
+    /**
+     * This will return array of latest content
+     * @return mixed
+     */
     public function getLatestDiff()
     {
         $version      = new VersionInfo();
@@ -170,6 +174,11 @@ class Versioning
         }
         return array_flip($commonKeys);
     }
+
+    /**
+     * This will return previous version content
+     * @return mixed
+     */
     public function getPreviousContent()
     {
         $version  = new VersionInfo();

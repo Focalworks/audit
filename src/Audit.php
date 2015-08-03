@@ -26,6 +26,11 @@ class Audit
         return $previousVersion;
     }
 
+    /**
+     * This will give per
+     * @param Content $content
+     * @return mixed
+     */
     public static function preVersion(Content $content)
     {
         $versioning = new Versioning($content);
@@ -42,7 +47,7 @@ class Audit
     public static function currentVersion(Content $content)
     {
         $versioning = new Versioning($content);
-        $currentVersion = $versioning->getcurrentVersion();
+        $currentVersion = $versioning->getCurrentVersion();
         return $currentVersion;
     }
 
@@ -109,6 +114,12 @@ class Audit
         dd($currentVersion);
     }
 
+    /**
+     * This will return all revisions from passed content type and id
+     * @param $type
+     * @param $id
+     * @return array
+     */
     public static function getDiffContent($type, $id)
     {
         $versioning = new Versioning();

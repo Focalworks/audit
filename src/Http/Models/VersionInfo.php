@@ -86,14 +86,6 @@ class VersionInfo extends Model
             ->first();
     }
 
-    // public function getRevision($id, $type)
-    // {
-    //     return DB::table($this->table)
-    //         ->where('revision_no', $id)
-    //         ->where('content_type', $type)
-    //         ->first();
-    // }
-
     public function getPreVersion($id, $type)
     {
         return DB::table($this->table)
